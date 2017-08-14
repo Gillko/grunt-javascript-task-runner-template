@@ -45,29 +45,7 @@ module.exports = function(grunt){
 				}
 			}
 		},
-		tags: {
-			buildScriptsSrc: {
-				options: {
-					scriptTemplate: '<script type="text/javascript" src="assets/js/main.js"></script>',
-					openTag: '<!-- start script template tags -->',
-					closeTag: '<!-- end script template tags -->'
-				},
-				src: [
-					'src/assets/js/*.js'
-				],
-				dest: 'src/index.html'
-			},
-			buildLinksSrc: {
-				options: {
-					linkTemplate: '<link rel="stylesheet" type="text/css" href="assets/css/main.css">',
-					openTag: '<!-- start css template tags -->',
-					closeTag: '<!-- end css template tags -->'
-				},
-				src: [
-					'src/assets/css/*.css'
-				],
-				dest: 'src/index.html'
-			},
+		/*tags: {
 			buildScriptsExport: {
 				options: {
 					scriptTemplate: '<script type="text/javascript" src="assets/js/main.min.js"></script>',
@@ -90,13 +68,13 @@ module.exports = function(grunt){
 				],
 				dest: 'export/index.html'
 			}
-		},
+		},*/
 		connect: {
 			server: {
 				options: {
 					hostname: "localhost",
 					port: 3000,
-					base: 'src/',
+					base: 'export/',
 					livereload: true
 				}
 			}
@@ -107,15 +85,17 @@ module.exports = function(grunt){
 			},
 			css: {
 				files: ['src/assets/sass/*.scss'],
-				tasks: ['sass']
+				tasks: ['sass_import', 'sass', 'cssmin']
 			},
 			js: {
 				files: ['src/assets/js/*.js'],
 				tasks: ['uglify']
 			},
 			html: {
-				files: ['src/index.html'],
-			}
+				files: ['src/index.html', 'src/includes/*.html'],
+				tasks: ['includes']
+			},
+			html_export: ['export/index.html']
 		}
 	});
 	grunt.loadNpmTasks('grunt-sass');
@@ -125,5 +105,6 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-script-link-tags');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['sass', 'cssmin', 'uglify', 'includes', 'tags', 'connect', 'watch']);
+	grunt.registerTask('default', ['connect', 'watch']);
+	//'tags', 
 };
