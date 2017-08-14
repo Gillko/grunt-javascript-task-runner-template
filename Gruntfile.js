@@ -1,6 +1,14 @@
 module.exports = function(grunt){
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		sass_import: {
+			options: {},
+			dist: {
+				files: {
+					'main.scss': ['imports/*']
+				}
+			}
+		},
 		sass: {
 			dist: {
 				files: {

@@ -15,6 +15,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-includes": "^1.0.0",
     "grunt-sass": "^2.0.0",
+    "grunt-sass-import": "^0.2.2",
     "npm": "^5.3.0"
   }
 }
