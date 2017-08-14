@@ -8,18 +8,38 @@ module.exports = function(grunt){
 				}
 			}
 		},
+		cssmin: {
+		  target: {
+			files: [{
+				expand: true,
+				cwd: 'assets/css',
+				src: ['*.css', '!*.min.css'],
+				dest: 'assets/css',
+				ext: '.min.css'
+			}]
+			}
+		},
+		uglify: {
+			my_target: {
+				files: {
+					'assets/js/main.min.js': 'assets/js/main.js'
+				}
+			}
+		},
 		watch: {
 			css: {
 				files: ['assets/sass/*.scss'],
 				tasks: ['sass']
 			},
-			/*js: {
-				files: ['src/js/*.js'],
-				tasks: ['uglify:dev']
-			}*/
+			js: {
+				files: ['assets/js/*.js'],
+				tasks: ['uglify']
+			}
 		}
 	});
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['sass']);
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.registerTask('default', ['sass', 'cssmin', 'uglify']);
 };
