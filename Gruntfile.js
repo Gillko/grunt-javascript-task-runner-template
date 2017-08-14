@@ -4,7 +4,7 @@ module.exports = function(grunt){
 		sass: {
 			dist: {
 				files: {
-					'assets/css/main.css': 'assets/sass/main.scss'
+					'export/assets/css/main.css': 'assets/sass/main.scss'
 				}
 			}
 		},
@@ -12,9 +12,9 @@ module.exports = function(grunt){
 		  target: {
 			files: [{
 				expand: true,
-				cwd: 'assets/css',
+				cwd: 'export/assets/css',
 				src: ['*.css', '!*.min.css'],
-				dest: 'assets/css',
+				dest: 'export/assets/css',
 				ext: '.min.css'
 			}]
 			}
@@ -22,7 +22,18 @@ module.exports = function(grunt){
 		uglify: {
 			my_target: {
 				files: {
-					'assets/js/main.min.js': 'assets/js/main.js'
+					'export/assets/js/main.min.js': 'assets/js/main.js'
+				}
+			}
+		},
+		includes: {
+			build: {
+				cwd: 'site',
+				src: ['*.html'],
+				dest: 'export',
+				options: {
+					flatten: true,
+					includePath: 'assets/includes'
 				}
 			}
 		},
@@ -41,5 +52,6 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.registerTask('default', ['sass', 'cssmin', 'uglify']);
+	grunt.loadNpmTasks('grunt-includes');
+	grunt.registerTask('default', ['sass', 'cssmin', 'uglify', 'includes']);
 };
