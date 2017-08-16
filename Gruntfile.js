@@ -1,14 +1,6 @@
 module.exports = function(grunt){
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		sass_import: {
-			options: {},
-			dist: {
-				files: {
-					'main.scss': ['imports/*']
-				}
-			}
-		},
 		sass: {
 			dist: {
 				files: {
@@ -22,7 +14,7 @@ module.exports = function(grunt){
 					expand: true,
 					cwd: 'src/assets/css',
 					src: ['*.css', '!*.min.css'],
-					dest: 'export/assets/css',
+					dest: 'build/assets/css',
 					ext: '.min.css'
 				}]
 			}
@@ -30,7 +22,7 @@ module.exports = function(grunt){
 		uglify: {
 			my_target: {
 				files: {
-					'export/assets/js/main.min.js': 'src/assets/js/main.js'
+					'build/assets/js/main.min.js': 'src/assets/js/main.js'
 				}
 			}
 		},
@@ -38,43 +30,43 @@ module.exports = function(grunt){
 			build: {
 				cwd: 'src',
 				src: ['*.html'],
-				dest: 'export',
+				dest: 'build',
 				options: {
 					flatten: true,
 					includePath: 'src/includes'
 				}
 			}
 		},
-		/*tags: {
-			buildScriptsExport: {
+		tags: {
+			buildScriptsBuild: {
 				options: {
 					scriptTemplate: '<script type="text/javascript" src="assets/js/main.min.js"></script>',
-					openTag: '<!-- start script template tags -->',
-					closeTag: '<!-- end script template tags -->'
+					openTag: '<!-- start custom js -->',
+					closeTag: '<!-- end custom js -->'
 				},
 				src: [
-					'export/assets/js/*.js'
+					'src/assets/js/*.js'
 				],
-				dest: 'export/index.html'
+				dest: 'build/index.html'
 			},
-			buildLinksSrc: {
+			buildLinksBuild: {
 				options: {
 					linkTemplate: '<link rel="stylesheet" type="text/css" href="assets/css/main.min.css">',
-					openTag: '<!-- start css template tags -->',
-					closeTag: '<!-- end css template tags -->'
+					openTag: '<!-- start custom css -->',
+					closeTag: '<!-- end custom css -->'
 				},
 				src: [
-					'export/assets/css/*.css'
+					'src/assets/css/*.css'
 				],
-				dest: 'export/index.html'
+				dest: 'build/index.html'
 			}
-		},*/
+		},
 		connect: {
 			server: {
 				options: {
 					hostname: "localhost",
 					port: 3000,
-					base: 'export/',
+					base: 'build/',
 					livereload: true
 				}
 			}
@@ -85,7 +77,7 @@ module.exports = function(grunt){
 			},
 			css: {
 				files: ['src/assets/sass/*.scss'],
-				tasks: ['sass_import', 'sass', 'cssmin']
+				tasks: ['sass', 'cssmin']
 			},
 			js: {
 				files: ['src/assets/js/*.js'],
@@ -95,7 +87,10 @@ module.exports = function(grunt){
 				files: ['src/index.html', 'src/includes/*.html'],
 				tasks: ['includes']
 			},
-			html_export: ['export/index.html']
+			html_export: {
+				files: ['src/index.html'],
+				tasks: ['tags']
+			}
 		}
 	});
 	grunt.loadNpmTasks('grunt-sass');
@@ -106,5 +101,4 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('default', ['connect', 'watch']);
-	//'tags', 
 };
